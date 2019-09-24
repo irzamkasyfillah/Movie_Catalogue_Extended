@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -39,7 +38,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        String message = context.getResources().getString(R.string.alarm_notif_message);
         String type = intent.getStringExtra(EXTRA_TYPE);
         int subType = intent.getIntExtra("subtype", 0);
         String message = intent.getStringExtra(EXTRA_MESSAGE);
@@ -49,7 +47,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         showAlarmNotification(context, title, message, notifId);
     }
 
-    private final static String DATE_FORMAT = "yyyy-MM-dd";
     private final static String TIME_FORMAT = "HH:mm";
 
     // Metode ini digunakan untuk validasi date dan time
