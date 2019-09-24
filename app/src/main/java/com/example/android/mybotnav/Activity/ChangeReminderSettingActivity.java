@@ -60,28 +60,31 @@ public class ChangeReminderSettingActivity extends AppCompatActivity implements 
         switch (buttonView.getId()) {
             case R.id.sw_daily_reminder :
                 if (isChecked) {
-                    alarmReceiver.setRepeatingAlarm(getApplicationContext(), "16:21", AlarmReceiver.TYPE_DAILY, 0, getResources().getString(R.string.alarm_notif_message));
+                    alarmReceiver.setRepeatingAlarm(getApplicationContext(), "19:35", AlarmReceiver.TYPE_DAILY, 0, getResources().getString(R.string.alarm_notif_message));
                 } else {
                     alarmReceiver.cancelAlarm(getApplicationContext(), AlarmReceiver.TYPE_DAILY, 0);
                 }
                 break;
             case R.id.sw_release_reminder :
+                int jumlah = listMovies.size();
                 if (isChecked) {
-                    int jumlah = listMovies.size();
-                    for (int i=0; i<listMovies.size(); i++) {
-                        String message = "";
-                        message = listMovies.get(i).getName();
-                        if (message != null) {
-                            message += " " +  getResources().getString(R.string.release_notif_message);
-                            alarmReceiver.setRepeatingAlarm(getApplicationContext(), "16:21", AlarmReceiver.TYPE_RELEASE, jumlah , message);
-                            jumlah--;
+                    if (jumlah > 0) {
+                        for (int i=0; i<listMovies.size(); i++) {
+                            String message;
+                            message = listMovies.get(i).getName();
+                            if (message != null) {
+                                message += " " +  getResources().getString(R.string.release_notif_message);
+                                alarmReceiver.setRepeatingAlarm(getApplicationContext(), "19:35", AlarmReceiver.TYPE_RELEASE, jumlah , message);
+                                jumlah--;
+                            }
                         }
                     }
                 } else {
-                    int jumlah = listMovies.size();
-                    for (int i=0; i<listMovies.size(); i++) {
-                        alarmReceiver.cancelAlarm(getApplicationContext(), AlarmReceiver.TYPE_RELEASE, jumlah );
-                        jumlah--;
+                    if (jumlah > 0) {
+                        for (int i=0; i<listMovies.size(); i++) {
+                            alarmReceiver.cancelAlarm(getApplicationContext(), AlarmReceiver.TYPE_RELEASE, jumlah );
+                            jumlah--;
+                        }
                     }
                 }
                 break;
