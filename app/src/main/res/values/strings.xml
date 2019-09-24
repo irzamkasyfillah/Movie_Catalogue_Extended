@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Movie and TV Show</string>
+    <string name="tv_show_image">TV Show Image</string>
+    <string name="movie_image">Movie Image</string>
+    <string name="overview">Overview</string>
+    <string name="genre">Genre</string>
+    <string name="status">Status</string>
+    <string name="release_date">Release Date</string>
+    <string name="movie">Movie</string>
+    <string name="tv_show">TV Show</string>
+    <string name="change_languange_setting">Change Languange Setting</string>
+    <string name="production_companies">Production Companies</string>
+    <string name="favorite">Favorite</string>
+    <string name="add_to_favorite">Add To Favorite</string>
+    <string name="delete">Delete</string>
+    <string name="empty_data">No data available</string>
+    <string name="success_add_favorite">Successfully added to favorite</string>
+    <string name="failed__add_favorite">Failed add to favorite</string>
+    <string name="success_delete_favorite">Successfully removed from favorite</string>
+    <string name="failed__delete_favorite">You have removed this item from favorite</string>
+    <string name="favorite_is_exist">You have added this item to favorite</string>
+    <string name="search">Search</string>
+    <string name="favorite_movie">FAVORITE MOVIES</string>
+    <string name="favorite_tv_show">FAVORITE TV SHOW</string>
+    <string name="empty_text">NO DATA</string>
+    <string name="alarm_notif_message">Have you checked the latest Movies and TV Shows today?</string>
+    <string name="change_reminder_setting">Change Reminder Setting</string>
+    <string name="release_reminder">Release Reminder</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="release_reminder_desc">Reminder showing the movie that release today</string>
+    <string name="daily_reminder_desc">Reminder to return to app</string>
+    <string name="reminder_setting">Reminder Setting</string>
+    <string name="release_notif_title">New Movies</string>
+    <string name="release_notif_message">has been released today!</string>
+
+</resources>
