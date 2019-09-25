@@ -1,7 +1,6 @@
 package com.example.android.mybotnav.Activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -11,29 +10,16 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.mybotnav.API.MovieAPI;
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.AlarmReceiver;
 import com.example.android.mybotnav.Fragment.FavoriteFragment;
 import com.example.android.mybotnav.Fragment.MovieFragment;
 import com.example.android.mybotnav.Fragment.TvShowFragment;
 import com.example.android.mybotnav.Item.Movie;
 import com.example.android.mybotnav.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private final String STATE_TITLE = "state_string";
     public String title = "Movie";
     private SearchView searchView;
-    private ArrayList<Movie> listMovies = new ArrayList<>();
+    private ArrayList<Movie> listMovies;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -143,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (item.getItemId() == R.id.action_change_reminder) {
                 Intent intent = new Intent(this, ChangeReminderSettingActivity.class );
-                intent.putExtra(ChangeReminderSettingActivity.RELEASE_TODAY_MOVIES, listMovies);
+//                intent.putExtra(ChangeReminderSettingActivity.RELEASE_TODAY_MOVIES, listMovies);
                 startActivity(intent);
             }
         }
@@ -170,52 +156,11 @@ public class MainActivity extends AppCompatActivity {
             title = savedInstanceState.getString(STATE_TITLE);
             setActionBarTitle(title);
         }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String date = sdf.format(new Date());
-        listMovies.clear();
-        new MovieTask().execute(MovieAPI.getDiscoverURL(date));
     }
 
     private void setActionBarTitle(String title) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
-        }
-    }
-
-    public class MovieTask extends AsyncTask<URL, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(URL... urls) {
-            String teks = null;
-            try {
-                teks = Network.getFromNetwork(urls[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return teks;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (s != null && !TextUtils.isEmpty(s)) {
-                try {
-                    JSONObject jObject = new JSONObject(s);
-                    JSONArray jArray = jObject.getJSONArray("results");
-                    for (int i = 0; i < jArray.length(); i++) {
-                        Movie movie = new Movie(jArray.getJSONObject(i));
-                        listMovies.add(movie);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

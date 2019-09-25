@@ -4,41 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:id="@+id/reminder_fragment"
     tools:context=".Activity.ChangeReminderSettingActivity">
-
-    <TextView
-        android:id="@+id/tv_release_reminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/release_reminder"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"/>
-
-    <Switch
-        android:id="@+id/sw_release_reminder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="@string/release_reminder_desc"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/daily_reminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/daily_reminder"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp"/>
-
-    <Switch
-        android:id="@+id/sw_daily_reminder"
-        android:text="@string/daily_reminder_desc"
-        android:gravity="start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
-
-
 </LinearLayout>

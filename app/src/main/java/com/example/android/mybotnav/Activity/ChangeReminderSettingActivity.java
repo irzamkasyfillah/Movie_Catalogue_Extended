@@ -1,36 +1,19 @@
 package com.example.android.mybotnav.Activity;
 
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
-import com.example.android.mybotnav.API.MovieAPI;
-import com.example.android.mybotnav.API.Network;
 import com.example.android.mybotnav.AlarmReceiver;
 import com.example.android.mybotnav.Item.Movie;
 import com.example.android.mybotnav.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
-public class ChangeReminderSettingActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
-
-    private AlarmReceiver alarmReceiver;
-    private ArrayList<Movie> listMovies = new ArrayList<>();
-    public static final String RELEASE_TODAY_MOVIES = "release_today_movie";
+public class ChangeReminderSettingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,55 +22,132 @@ public class ChangeReminderSettingActivity extends AppCompatActivity implements 
 
         setActionBarTitle(getResources().getString(R.string.reminder_setting));
 
-        Switch swRelease = findViewById(R.id.sw_release_reminder);
-        Switch swDaily = findViewById(R.id.sw_daily_reminder);
-        swRelease.setOnCheckedChangeListener(this);
-        swDaily.setOnCheckedChangeListener(this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.reminder_fragment, new SettingReminderFragment())
+                .commit();
+    }
 
-        listMovies = getIntent().getParcelableArrayListExtra(RELEASE_TODAY_MOVIES);
-        alarmReceiver = new AlarmReceiver();
+    public static class SettingReminderFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+        public static final String DAILY_REMINDER_KEY = "daily_reminder";
+        public static final String RELEASE_REMINDER_KEY = "release_reminder";
+        public static final String JAM7 = "07:00";
+        public static final String JAM8 = "08:00";
 
+        private SwitchPreferenceCompat dailySwitch;
+        private SwitchPreferenceCompat releaseSwitch;
+
+        private AlarmReceiver alarmReceiver;
+
+        private ArrayList<Movie> arrayListMovie = new ArrayList<>();
+
+        @Override
+        public void onCreatePreferences(Bundle bundle, String s) {
+            addPreferencesFromResource(R.xml.preferences);
+            dailySwitch = (SwitchPreferenceCompat) findPreference(DAILY_REMINDER_KEY);
+            releaseSwitch = (SwitchPreferenceCompat) findPreference(RELEASE_REMINDER_KEY);
+
+            setSummaries();
+
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//            String date = sdf.format(new Date());
+//            arrayListMovie.clear();
+//            new MovieTask().execute(MovieAPI.getDiscoverURL(date));
+
+            alarmReceiver = new AlarmReceiver();
+
+            dailySwitch.setOnPreferenceChangeListener(this);
+            releaseSwitch.setOnPreferenceChangeListener(this);
+
+        }
+
+        public void setSummaries() {
+            SharedPreferences sh = getPreferenceManager().getSharedPreferences();
+            dailySwitch.setChecked(sh.getBoolean(DAILY_REMINDER_KEY, false));
+            releaseSwitch.setChecked(sh.getBoolean(RELEASE_REMINDER_KEY, false));
+        }
+
+//        public class MovieTask extends AsyncTask<URL, Void, String> {
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//            }
+//
+//            @Override
+//            protected String doInBackground(URL... urls) {
+//                String teks = null;
+//                try {
+//                    teks = Network.getFromNetwork(urls[0]);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return teks;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                if (s != null && !TextUtils.isEmpty(s)) {
+//                    try {
+//                        JSONObject jObject = new JSONObject(s);
+//                        JSONArray jArray = jObject.getJSONArray("results");
+//                        for (int i = 0; i < jArray.length(); i++) {
+//                            Movie movie = new Movie(jArray.getJSONObject(i));
+//                            arrayListMovie.add(movie);
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object o) {
+            switch (preference.getKey()) {
+                case DAILY_REMINDER_KEY:
+                    if (o.equals(true)) {
+                        alarmReceiver.setRepeatingAlarm(getContext(), JAM7, AlarmReceiver.TYPE_DAILY, 0, getResources().getString(R.string.alarm_notif_message));
+                    } else {
+                        alarmReceiver.cancelAlarm(getContext(), AlarmReceiver.TYPE_DAILY, 0);
+                        dailySwitch.setChecked(false);
+                    }
+                    break;
+
+                case RELEASE_REMINDER_KEY:
+                    if (o.equals(true)) {
+                        int jumlah = arrayListMovie.size();
+                        if (jumlah > 0) {
+                            for (int i = 0; i < arrayListMovie.size(); i++) {
+                                String message;
+                                message = arrayListMovie.get(i).getName();
+                                if (message != null) {
+                                    message += " " + getResources().getString(R.string.release_notif_message);
+                                    alarmReceiver.setRepeatingAlarm(getContext(), JAM8, AlarmReceiver.TYPE_RELEASE, jumlah, message);
+                                    jumlah--;
+                                }
+                            }
+                            dailySwitch.setChecked(true);
+                        }
+                    } else {
+                        int jumlah = arrayListMovie.size();
+                        if (jumlah > 0) {
+                            for (int i = 0; i < arrayListMovie.size(); i++) {
+                                alarmReceiver.cancelAlarm(getContext(), AlarmReceiver.TYPE_RELEASE, jumlah);
+                                jumlah--;
+                            }
+                        }
+                    }
+                    break;
+            }
+            return true;
+        }
     }
 
     private void setActionBarTitle(String title) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.sw_daily_reminder :
-                if (isChecked) {
-                    alarmReceiver.setRepeatingAlarm(getApplicationContext(), "19:35", AlarmReceiver.TYPE_DAILY, 0, getResources().getString(R.string.alarm_notif_message));
-                } else {
-                    alarmReceiver.cancelAlarm(getApplicationContext(), AlarmReceiver.TYPE_DAILY, 0);
-                }
-                break;
-            case R.id.sw_release_reminder :
-                int jumlah = listMovies.size();
-                if (isChecked) {
-                    if (jumlah > 0) {
-                        for (int i=0; i<listMovies.size(); i++) {
-                            String message;
-                            message = listMovies.get(i).getName();
-                            if (message != null) {
-                                message += " " +  getResources().getString(R.string.release_notif_message);
-                                alarmReceiver.setRepeatingAlarm(getApplicationContext(), "19:35", AlarmReceiver.TYPE_RELEASE, jumlah , message);
-                                jumlah--;
-                            }
-                        }
-                    }
-                } else {
-                    if (jumlah > 0) {
-                        for (int i=0; i<listMovies.size(); i++) {
-                            alarmReceiver.cancelAlarm(getApplicationContext(), AlarmReceiver.TYPE_RELEASE, jumlah );
-                            jumlah--;
-                        }
-                    }
-                }
-                break;
         }
     }
 }
