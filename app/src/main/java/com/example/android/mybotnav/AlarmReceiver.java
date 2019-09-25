@@ -10,24 +10,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.android.mybotnav.API.Network;
+import com.example.android.mybotnav.Item.Movie;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private ArrayList<Movie> arrayList = new ArrayList<>();
+
     private final static int ID_RELEASE= 101;
     private final static int ID_DAILY= 100;
 
     public static final String TYPE_RELEASE= "type_release";
-    public static int SUB_TYPE_RELEASE = 0;
     public static final String TYPE_DAILY= "type_daily";
 
     private static final String EXTRA_MESSAGE = "extra_message" ;
@@ -153,5 +166,40 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
+//    public class MovieTask extends AsyncTask<URL, Void, String> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected String doInBackground(URL... urls) {
+//            String teks = null;
+//            try {
+//                teks = Network.getFromNetwork(urls[0]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return teks;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//            super.onPostExecute(s);
+//            if (s != null && !TextUtils.isEmpty(s)) {
+//                try {
+//                    JSONObject jObject = new JSONObject(s);
+//                    JSONArray jArray = jObject.getJSONArray("results");
+//                    for (int i = 0; i < jArray.length(); i++) {
+//                        Movie movie = new Movie(jArray.getJSONObject(i));
+//                        arrayListMovie.add(movie);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
 }
