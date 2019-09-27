@@ -23,7 +23,7 @@
     <string name="favorite_movie">FAVORITE MOVIES</string>
     <string name="favorite_tv_show">FAVORITE TV SHOW</string>
     <string name="empty_text">NO DATA</string>
-    <string name="alarm_notif_message">Have you checked the latest Movies and TV Shows today?</string>
+    <string name="alarm_notif_message">Have you checked the most popular Movies and TV Shows today?</string>
     <string name="change_reminder_setting">Change Reminder Setting</string>
     <string name="release_reminder">Release Reminder</string>
     <string name="daily_reminder">Daily Reminder</string>

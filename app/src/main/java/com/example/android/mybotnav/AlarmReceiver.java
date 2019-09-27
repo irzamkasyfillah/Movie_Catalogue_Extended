@@ -12,11 +12,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.android.mybotnav.API.MovieAPI;
 import com.example.android.mybotnav.API.Network;
 import com.example.android.mybotnav.Item.Movie;
 
@@ -31,13 +33,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private ArrayList<Movie> arrayList = new ArrayList<>();
-
-    private final static int ID_RELEASE= 101;
+    private final static int ID_RELEASE = 200;
+    private ArrayList<Movie> arrayListMovie = new ArrayList<>();
     private final static int ID_DAILY= 100;
 
     public static final String TYPE_RELEASE= "type_release";
@@ -50,14 +52,37 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         String type = intent.getStringExtra(EXTRA_TYPE);
-        int subType = intent.getIntExtra("subtype", 0);
-        String message = intent.getStringExtra(EXTRA_MESSAGE);
-        String title = type.equalsIgnoreCase(TYPE_RELEASE) ? context.getResources().getString(R.string.release_notif_title) : null;
-        int notifId = type.equalsIgnoreCase(TYPE_RELEASE) ? (ID_RELEASE+subType) : ID_DAILY;
+        final String message = intent.getStringExtra(EXTRA_MESSAGE);
+        final String title = type.equalsIgnoreCase(TYPE_RELEASE) ? context.getResources().getString(R.string.release_notif_title) : null;
+        if (type.equalsIgnoreCase(TYPE_RELEASE)) {
+            //update data film setiap hari
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String date = sdf.format(new Date());
+            arrayListMovie.clear();
+            new MovieTask().execute(MovieAPI.getDiscoverURL(date));
+            // countdowntimer untuk memberikan waktu untuk asyntask berjalan dan agar data film != null
+            new CountDownTimer(15000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                }
 
-        showAlarmNotification(context, title, message, notifId);
+                @Override
+                public void onFinish() {
+                    int jumlah = arrayListMovie.size();
+                    if (arrayListMovie.size() > 0) {
+                        for (int i = 0; i < arrayListMovie.size(); i++) {
+                            String message = arrayListMovie.get(--jumlah).getName() + " " + context.getResources().getString(R.string.release_notif_message);
+                            int notifId = ID_RELEASE + i;
+                            showAlarmNotification(context, title, message, notifId);
+                        }
+                    }
+                }
+            }.start();
+        } else if (type.equalsIgnoreCase(TYPE_DAILY)) {
+            showAlarmNotification(context, title, message, ID_DAILY);
+        }
     }
 
     private final static String TIME_FORMAT = "HH:mm";
@@ -75,7 +100,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     // Metode ini digunakan untuk menjalankan alarm repeating
-    public void setRepeatingAlarm(Context context, String time, String type, int subType, String message) {
+    public void setRepeatingAlarm(Context context, String time, String type, String message) {
 
         // Validasi inputan waktu terlebih dahulu
         if (isDateInvalid(time, TIME_FORMAT)) return;
@@ -84,7 +109,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra(EXTRA_MESSAGE, message);
         intent.putExtra(EXTRA_TYPE, type);
-        intent.putExtra("subtype", subType);
 
         String[] timeArray = time.split(":");
 
@@ -94,7 +118,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         calendar.set(Calendar.SECOND, 0);
 
         if (type.equals(TYPE_RELEASE)) {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ID_RELEASE+subType, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ID_RELEASE, intent, 0);
             if (alarmManager != null) {
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             }
@@ -106,13 +130,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public void cancelAlarm(Context context, String type, int subType) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        int requestCode = type.equalsIgnoreCase(TYPE_RELEASE) ? ID_RELEASE+subType : ID_DAILY;
+    public void cancelAlarm(final Context context, String type) {
+        final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        final Intent intent = new Intent(context, AlarmReceiver.class);
+        int requestCode = type.equalsIgnoreCase(TYPE_RELEASE) ? ID_RELEASE : ID_DAILY;
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
         pendingIntent.cancel();
-
         if (alarmManager != null) {
             alarmManager.cancel(pendingIntent);
         }
@@ -166,40 +189,40 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-//    public class MovieTask extends AsyncTask<URL, Void, String> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//        }
-//
-//        @Override
-//        protected String doInBackground(URL... urls) {
-//            String teks = null;
-//            try {
-//                teks = Network.getFromNetwork(urls[0]);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return teks;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            if (s != null && !TextUtils.isEmpty(s)) {
-//                try {
-//                    JSONObject jObject = new JSONObject(s);
-//                    JSONArray jArray = jObject.getJSONArray("results");
-//                    for (int i = 0; i < jArray.length(); i++) {
-//                        Movie movie = new Movie(jArray.getJSONObject(i));
-//                        arrayListMovie.add(movie);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+    public class MovieTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String teks = null;
+            try {
+                teks = Network.getFromNetwork(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return teks;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s != null && !TextUtils.isEmpty(s)) {
+                try {
+                    JSONObject jObject = new JSONObject(s);
+                    JSONArray jArray = jObject.getJSONArray("results");
+                    for (int i = 0; i < jArray.length(); i++) {
+                        Movie movie = new Movie(jArray.getJSONObject(i));
+                        arrayListMovie.add(movie);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

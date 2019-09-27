@@ -23,7 +23,7 @@
     <string name="favorite_movie">FILM FAVORIT</string>
     <string name="favorite_tv_show">ACARA TV FAVORIT</string>
     <string name="empty_text">TIDAK ADA DATA</string>
-    <string name="alarm_notif_message">Sudahkah Anda melihat daftar film dan acara TV terbaru hari ini?</string>
+    <string name="alarm_notif_message">Sudahkah Anda melihat daftar film dan acara TV terpopuler hari ini?</string>
     <string name="change_reminder_setting">Ubah Pengaturan Pengingat</string>
     <string name="release_reminder">Pengingat Rilis</string>
     <string name="daily_reminder">Pengingat Harian</string>
