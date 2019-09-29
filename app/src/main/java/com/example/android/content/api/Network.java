@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.API;
+package com.example.android.content.api;
 
 import java.io.IOException;
 import java.io.InputStream;

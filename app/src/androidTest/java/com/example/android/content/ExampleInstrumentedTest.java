@@ -1,4 +1,4 @@
-package com.example.android.mybotnav;
+package com.example.android.content;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

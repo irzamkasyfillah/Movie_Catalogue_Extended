@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.adapter;
+package com.example.android.content.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.android.mybotnav.Item.Movie;
-import com.example.android.mybotnav.Loading.LoadingMovieDetail;
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
+import com.example.android.content.item.Movie;
+import com.example.android.content.loading.LoadingMovieDetail;
 
 import java.util.ArrayList;
 
@@ -32,13 +32,6 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
         this.context = context;
     }
 
-    public void refill(ArrayList<Movie> items) {
-        this.listMovie = new ArrayList<>();
-        this.listMovie.addAll(items);
-
-        notifyDataSetChanged();
-    }
-
     public void setListFavorite(ArrayList<Movie> listMovie) {
         this.listMovie = new ArrayList<>();
         this.listMovie.addAll(listMovie);
@@ -48,7 +41,6 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
     public ArrayList<Movie> getListMovie() {
         return listMovie;
     }
-
 
     @NonNull
     @Override

@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.adapter;
+package com.example.android.content.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.android.mybotnav.Item.TVShow;
-import com.example.android.mybotnav.Loading.LoadingTVShowDetail;
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
+import com.example.android.content.item.TVShow;
+import com.example.android.content.loading.LoadingTVShowDetail;
 
 import java.util.ArrayList;
 
@@ -32,10 +32,9 @@ public class ListTVShowAdapter extends RecyclerView.Adapter<ListTVShowAdapter.Li
         this.context = context;
     }
 
-    public void refill(ArrayList<TVShow> items) {
+    public void setListFavorite(ArrayList<TVShow> items) {
         this.listTVShow = new ArrayList<>();
         this.listTVShow.addAll(items);
-
         notifyDataSetChanged();
     }
 

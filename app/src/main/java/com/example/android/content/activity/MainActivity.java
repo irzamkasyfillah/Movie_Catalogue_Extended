@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Activity;
+package com.example.android.content.activity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,11 +13,11 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.mybotnav.Fragment.FavoriteFragment;
-import com.example.android.mybotnav.Fragment.MovieFragment;
-import com.example.android.mybotnav.Fragment.TvShowFragment;
-import com.example.android.mybotnav.Item.Movie;
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
+import com.example.android.content.fragment.FavoriteFragment;
+import com.example.android.content.fragment.MovieFragment;
+import com.example.android.content.fragment.TvShowFragment;
+import com.example.android.content.item.Movie;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(mIntent);
         } else {
             if (item.getItemId() == R.id.action_change_reminder) {
-                Intent intent = new Intent(this, ChangeReminderSettingActivity.class );
+                Intent intent = new Intent(this, ChangeReminderSettingActivity.class);
 //                intent.putExtra(ChangeReminderSettingActivity.RELEASE_TODAY_MOVIES, listMovies);
                 startActivity(intent);
             }

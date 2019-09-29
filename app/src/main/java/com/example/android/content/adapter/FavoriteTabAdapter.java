@@ -1,12 +1,12 @@
-package com.example.android.mybotnav.adapter;
+package com.example.android.content.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.mybotnav.Fragment.FavoriteMoviesFragment;
-import com.example.android.mybotnav.Fragment.FavoriteTVShowFragment;
+import com.example.android.content.fragment.FavoriteMoviesFragment;
+import com.example.android.content.fragment.FavoriteTVShowFragment;
 
 public class FavoriteTabAdapter extends FragmentPagerAdapter {
 

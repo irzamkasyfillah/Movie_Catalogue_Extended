@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Activity;
+package com.example.android.content.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 
-import com.example.android.mybotnav.AlarmReceiver;
-import com.example.android.mybotnav.R;
+import com.example.android.content.AlarmReceiver;
+import com.example.android.content.R;
 
 public class ChangeReminderSettingActivity extends AppCompatActivity {
 
@@ -24,6 +24,12 @@ public class ChangeReminderSettingActivity extends AppCompatActivity {
                 .add(R.id.reminder_fragment, new SettingReminderFragment())
                 .commit();
 
+    }
+
+    private void setActionBarTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     public static class SettingReminderFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
@@ -79,12 +85,6 @@ public class ChangeReminderSettingActivity extends AppCompatActivity {
                     break;
             }
             return true;
-        }
-    }
-
-    private void setActionBarTitle(String title) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
         }
     }
 }
