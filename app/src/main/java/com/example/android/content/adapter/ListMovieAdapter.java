@@ -54,7 +54,7 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
     public void onBindViewHolder(@NonNull final ListViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final Movie movie = listMovie.get(position);
 
-        Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + movie.getPhoto1()).into(holder.imgPhoto);
+        Glide.with(holder.itemView.getContext()).load(holder.itemView.getContext().getResources().getString(R.string.image_url) + movie.getPhoto1()).into(holder.imgPhoto);
 
         if (movie.getName() != null && !TextUtils.isEmpty(movie.getName()))
             holder.tvName.setText(movie.getName());

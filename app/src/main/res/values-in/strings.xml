@@ -9,6 +9,7 @@
     <string name="movie">Film</string>
     <string name="tv_show">Acara TV </string>
     <string name="change_languange_setting">Ubah Pengaturan Bahasa</string>
+    <string name="image_url">https://image.tmdb.org/t/p/w500</string>
     <string name="production_companies">Perusahaan Produksi</string>
     <string name="favorite">Favorit</string>
     <string name="add_to_favorite">Tambah ke favorit</string>

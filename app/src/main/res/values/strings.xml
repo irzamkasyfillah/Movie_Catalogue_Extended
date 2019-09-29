@@ -8,6 +8,7 @@
     <string name="release_date">Release Date</string>
     <string name="movie">Movie</string>
     <string name="tv_show">TV Show</string>
+    <string name="image_url">https://image.tmdb.org/t/p/w500</string>
     <string name="change_languange_setting">Change Languange Setting</string>
     <string name="production_companies">Production Companies</string>
     <string name="favorite">Favorite</string>

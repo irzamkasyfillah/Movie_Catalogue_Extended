@@ -59,7 +59,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         tagline = movie.getTagline();
         production = movie.getAllproduction();
 
-        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + photo2).into(imgPhoto);
+        Glide.with(getApplicationContext()).load(getResources().getString(R.string.image_url) + photo2).into(imgPhoto);
 
         tvName.setText(name);
         if (description != null && !TextUtils.isEmpty(description))

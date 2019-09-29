@@ -53,7 +53,7 @@ public class ListTVShowAdapter extends RecyclerView.Adapter<ListTVShowAdapter.Li
     public void onBindViewHolder(@NonNull final ListViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final TVShow tvShow = listTVShow.get(position);
 
-        Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + tvShow.getPhoto1()).into(holder.imgPhoto);
+        Glide.with(holder.itemView.getContext()).load(holder.itemView.getContext().getResources().getString(R.string.image_url) + tvShow.getPhoto1()).into(holder.imgPhoto);
 
         if (tvShow.getName() != null && !TextUtils.isEmpty(tvShow.getName()))
             holder.tvName.setText(tvShow.getName());
