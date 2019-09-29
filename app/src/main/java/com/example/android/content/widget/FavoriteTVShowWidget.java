@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Widget;
+package com.example.android.content.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,33 +9,35 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
 
-public class FavoriteMovieWidget extends AppWidgetProvider {
+/**
+ * Implementation of App Widget functionality.
+ */
+public class FavoriteTVShowWidget extends AppWidgetProvider {
 
-    private static final String TOAST_ACTION = "com.example.android.mybotnav.TOAST_ACTION";
     public static final String EXTRA_ITEM = "com.example.android.mybotnav.EXTRA_ITEM";
+    private static final String TOAST_ACTION = "com.example.android.mybotnav.TOAST_ACTION";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-        Intent intent = new Intent(context, MovieStackWidgetService.class);
+        Intent intent = new Intent(context, TVShowStackWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.banner_widget);
         views.setRemoteAdapter(R.id.stack_view, intent);
         views.setEmptyView(R.id.stack_view, R.id.empty_view);
-        views.setTextViewText(R.id.banner_text, "FAVORITE MOVIES");
+        views.setTextViewText(R.id.banner_text, "FAVORITE TV SHOW");
 
         Intent toastIntent = new Intent(context, FavoriteMovieWidget.class);
-        toastIntent.setAction(FavoriteMovieWidget.TOAST_ACTION);
+        toastIntent.setAction(FavoriteTVShowWidget.TOAST_ACTION);
         toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
-
     }
 
     @Override

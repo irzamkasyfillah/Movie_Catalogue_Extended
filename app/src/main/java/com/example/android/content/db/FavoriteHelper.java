@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.db;
+package com.example.android.content.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,20 +7,20 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.android.mybotnav.Item.Movie;
-import com.example.android.mybotnav.Item.TVShow;
+import com.example.android.content.item.Movie;
+import com.example.android.content.item.TVShow;
 
 import java.util.ArrayList;
 
 import static android.provider.BaseColumns._ID;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.DATE;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.IMAGE;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.IMAGE2;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.OVERVIEW;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.RATING;
-import static com.example.android.mybotnav.db.DatabaseContract.NoteColumns.TITLE;
-import static com.example.android.mybotnav.db.DatabaseContract.TABLE_FAV;
-import static com.example.android.mybotnav.db.DatabaseContract.TABLE_FAV2;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.DATE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE2;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.OVERVIEW;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.RATING;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.TITLE;
+import static com.example.android.content.db.DatabaseContract.TABLE_FAV;
+import static com.example.android.content.db.DatabaseContract.TABLE_FAV2;
 
 public class FavoriteHelper {
     private static final String DATABASE_TABLE = TABLE_FAV;
@@ -139,23 +139,6 @@ public class FavoriteHelper {
             } while (!cursor.isAfterLast());
         }
         cursor.close();
-//        String sql = "SELECT * FROM " + TABLE_FAV;
-//        database = dataBaseHelper.getReadableDatabase();
-//        Cursor cursor = database.rawQuery(sql, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                Movie movie = new Movie();
-//                movie.setId(cursor.getInt(cursor.getColumnIndexOrThrow(_ID)));
-//                movie.setName(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
-//                movie.setRating(cursor.getFloat(cursor.getColumnIndexOrThrow(RATING)));
-//                movie.setPhoto1(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE)));
-//                movie.setDate(cursor.getString(cursor.getColumnIndexOrThrow(DATE)));
-//                movie.setPhoto2(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE2)));
-//                movie.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
-//                arrayList.add(movie);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
         return arrayList;
     }
 
@@ -186,5 +169,73 @@ public class FavoriteHelper {
 
     public int deleteFavorite2(int id) {
         return database.delete(TABLE_FAV2, _ID + " = '" + id + "'", null);
+    }
+
+    //Content Provider
+    //Untuk Favorite TV SHOW
+
+    public Cursor queryByIdProvider(String id) {
+        return database.query(DATABASE_TABLE, null
+                , _ID + " = ?"
+                , new String[]{id}
+                , null
+                , null
+                , null
+                , null);
+    }
+
+    public Cursor queryProvider() {
+        return database.query(DATABASE_TABLE
+                , null
+                , null
+                , null
+                , null
+                , null
+                , _ID + " ASC");
+    }
+
+    public long insertProvider(ContentValues values) {
+        return database.insert(DATABASE_TABLE, null, values);
+    }
+
+    public int updateProvider(String id, ContentValues values) {
+        return database.update(DATABASE_TABLE, values, _ID + " = ?", new String[]{id});
+    }
+
+    public int deleteProvider(String id) {
+        return database.delete(DATABASE_TABLE, _ID + " = ?", new String[]{id});
+    }
+
+    //Untuk Favorite TV SHOW
+    public Cursor queryByIdProvider2(String id) {
+        return database.query(DATABASE_TABLE2, null
+                , _ID + " = ?"
+                , new String[]{id}
+                , null
+                , null
+                , null
+                , null);
+    }
+
+    public Cursor queryProvider2() {
+        return database.query(DATABASE_TABLE2
+                , null
+                , null
+                , null
+                , null
+                , null
+                , _ID + " ASC");
+    }
+
+    public long insertProvider2(ContentValues values) {
+        return database.insert(DATABASE_TABLE2, null, values);
+    }
+
+    public int updateProvider2(String id, ContentValues values) {
+        return database.update(DATABASE_TABLE2, values, _ID + " = ?", new String[]{id});
+    }
+
+    public int deleteProvider2(String id) {
+        return database.delete(DATABASE_TABLE2, _ID + " = ?", new String[]{id});
     }
 }

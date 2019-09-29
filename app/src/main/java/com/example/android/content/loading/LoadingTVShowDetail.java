@@ -1,17 +1,19 @@
-package com.example.android.mybotnav.Loading;
+package com.example.android.content.loading;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.API.TVShowAPI;
-import com.example.android.mybotnav.Activity.DetailTVShowActivity;
-import com.example.android.mybotnav.Item.TVShow;
-import com.example.android.mybotnav.Item.TVShowDetail;
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
+import com.example.android.content.activity.DetailTVShowActivity;
+import com.example.android.content.api.Network;
+import com.example.android.content.api.TVShowAPI;
+import com.example.android.content.item.TVShow;
+import com.example.android.content.item.TVShowDetail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class LoadingTVShowDetail extends AppCompatActivity {
     private int tvShowId;
     private String name, description, date, photo2;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.android.mybotnav">
+    package="com.example.android.content">
 
     <application
         android:allowBackup="true"
@@ -11,21 +11,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activity.ChangeReminderSettingActivity"></activity>
+        <activity android:name="com.example.android.content.activity.ChangeReminderSettingActivity">
+
+        </activity>
         <activity
-            android:name=".Activity.DetailTVShowActivity"
+            android:name="com.example.android.content.activity.DetailTVShowActivity"
             android:label="@string/tv_show" />
         <activity
-            android:name=".Activity.DetailMovieActivity"
+            android:name="com.example.android.content.activity.DetailMovieActivity"
             android:label="@string/movie" />
         <activity
-            android:name=".Loading.LoadingMovieDetail"
+            android:name="com.example.android.content.loading.LoadingMovieDetail"
             android:label="@string/movie" />
         <activity
-            android:name=".Loading.LoadingTVShowDetail"
+            android:name="com.example.android.content.loading.LoadingTVShowDetail"
             android:label="@string/tv_show" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name="com.example.android.content.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +36,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Widget.FavoriteTVShowWidget">
-            <intent-filter>
+        <provider
+            android:name="com.example.android.content.provider.FavoriteProvider"
+            android:authorities="com.example.android.content"
+            android:exported="true"
+            android:readPermission="com.example.android.content.READ_DATABASE"
+            android:writePermission="com.example.android.content.WRITE_DATABASE"></provider>
+
+        <receiver android:name="com.example.android.content.widget.FavoriteTVShowWidget">
+            <intent-filter>x
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
@@ -43,7 +52,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/image_banner_widget_info" />
         </receiver>
-        <receiver android:name=".Widget.FavoriteMovieWidget">
+        <receiver android:name="com.example.android.content.widget.FavoriteMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -54,20 +63,30 @@
         </receiver>
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name="com.example.android.content.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <service
-            android:name=".Widget.MovieStackWidgetService"
+            android:name="com.example.android.content.widget.MovieStackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <service
-            android:name=".Widget.TVShowStackWidgetService"
+            android:name="com.example.android.content.widget.TVShowStackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
-    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission
+        android:name="com.example.android.content.WRITE_DATABASE"
+        android:protectionLevel="normal" />
+
+    <permission
+        android:name="com.example.android.content.READ_DATABASE"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>

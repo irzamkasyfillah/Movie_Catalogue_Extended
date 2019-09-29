@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Widget;
+package com.example.android.content.widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

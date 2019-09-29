@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.db;
+package com.example.android.content.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

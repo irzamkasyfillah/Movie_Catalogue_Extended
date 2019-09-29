@@ -1,11 +1,23 @@
-package com.example.android.mybotnav.Item;
+package com.example.android.content.item;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.provider.BaseColumns._ID;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.DATE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE2;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.OVERVIEW;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.RATING;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.TITLE;
+import static com.example.android.content.db.DatabaseContract.getColumnFloat;
+import static com.example.android.content.db.DatabaseContract.getColumnInt;
+import static com.example.android.content.db.DatabaseContract.getColumnString;
 
 public class Movie implements Parcelable {
 
@@ -38,9 +50,6 @@ public class Movie implements Parcelable {
             id = jObject.getInt("id");
             name = jObject.getString("original_title");
             photo1 = jObject.getString("poster_path");
-//            if (photo1 == null) {
-//                photo1 = ;
-//            }
             rating = (float) jObject.getDouble("vote_average");
             description = jObject.getString("overview");
             date = jObject.getString("release_date");
@@ -68,6 +77,26 @@ public class Movie implements Parcelable {
         this.allgenre = in.readString();
         this.allproduction = in.readString();
         this.tagline = in.readString();
+    }
+
+    public Movie(int id, String name, String photo1, String photo2, String description, float rating, String date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.photo1 = photo1;
+        this.photo2 = photo2;
+        this.rating = rating;
+    }
+
+    public Movie(Cursor cursor) {
+        this.id = getColumnInt(cursor, _ID);
+        this.name = getColumnString(cursor, TITLE);
+        this.description = getColumnString(cursor, OVERVIEW);
+        this.date = getColumnString(cursor, DATE);
+        this.photo1 = getColumnString(cursor, IMAGE);
+        this.photo2 = getColumnString(cursor, IMAGE2);
+        this.rating = getColumnFloat(cursor, RATING);
     }
 
     public String getAllgenre() {

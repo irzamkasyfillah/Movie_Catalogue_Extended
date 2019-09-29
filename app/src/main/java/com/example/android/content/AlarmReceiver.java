@@ -1,4 +1,4 @@
-package com.example.android.mybotnav;
+package com.example.android.content;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -18,9 +18,9 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.android.mybotnav.API.MovieAPI;
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.Item.Movie;
+import com.example.android.content.api.MovieAPI;
+import com.example.android.content.api.Network;
+import com.example.android.content.item.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,15 +38,14 @@ import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    public static final String TYPE_RELEASE = "type_release";
+    public static final String TYPE_DAILY = "type_daily";
     private final static int ID_RELEASE = 200;
+    private final static int ID_DAILY = 100;
+    private static final String EXTRA_MESSAGE = "extra_message";
+    private static final String EXTRA_TYPE = "extra_type";
+    private final static String TIME_FORMAT = "HH:mm";
     private ArrayList<Movie> arrayListMovie = new ArrayList<>();
-    private final static int ID_DAILY= 100;
-
-    public static final String TYPE_RELEASE= "type_release";
-    public static final String TYPE_DAILY= "type_daily";
-
-    private static final String EXTRA_MESSAGE = "extra_message" ;
-    private static final String EXTRA_TYPE= "extra_type" ;
 
     public AlarmReceiver() {
     }
@@ -84,8 +83,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             showAlarmNotification(context, title, message, ID_DAILY);
         }
     }
-
-    private final static String TIME_FORMAT = "HH:mm";
 
     // Metode ini digunakan untuk validasi date dan time
     public boolean isDateInvalid(String date, String format) {

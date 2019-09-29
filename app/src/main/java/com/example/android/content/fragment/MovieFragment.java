@@ -1,10 +1,12 @@
-package com.example.android.mybotnav.Fragment;
+package com.example.android.content.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.android.mybotnav.API.MovieAPI;
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.Item.Movie;
-import com.example.android.mybotnav.R;
-import com.example.android.mybotnav.adapter.ListMovieAdapter;
+import com.example.android.content.R;
+import com.example.android.content.adapter.ListMovieAdapter;
+import com.example.android.content.api.MovieAPI;
+import com.example.android.content.api.Network;
+import com.example.android.content.item.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +46,7 @@ public class MovieFragment extends Fragment {
         this.query = query;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -57,11 +60,12 @@ public class MovieFragment extends Fragment {
 
         if (query != null) {
             new MovieTask().execute(MovieAPI.getSearchURL(query));
-        } else if (savedInstanceState == null) {
+        }
+        if (savedInstanceState == null) {
             new MovieTask().execute(MovieAPI.getURL("popular"));
         } else {
             listMovies = savedInstanceState.getParcelableArrayList(KEY_MOVIES);
-            listMovieAdapter.refill(listMovies);
+            listMovieAdapter.setListFavorite(listMovies);
         }
     }
 

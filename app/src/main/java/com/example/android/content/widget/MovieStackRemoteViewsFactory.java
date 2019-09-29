@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Widget;
+package com.example.android.content.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.example.android.mybotnav.Item.TVShow;
-import com.example.android.mybotnav.R;
-import com.example.android.mybotnav.db.FavoriteHelper;
+import com.example.android.content.R;
+import com.example.android.content.db.FavoriteHelper;
+import com.example.android.content.item.Movie;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +17,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class TVShowStackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+public class MovieStackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private final Context mContext;
-    private ArrayList<TVShow> tvShowArrayList = new ArrayList<>();
     FavoriteHelper favoriteHelper;
+    private ArrayList<Movie> movieArrayList = new ArrayList<>();
 
-    public TVShowStackRemoteViewsFactory(Context mContext) {
+    public MovieStackRemoteViewsFactory(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -35,8 +35,8 @@ public class TVShowStackRemoteViewsFactory implements RemoteViewsService.RemoteV
     public void onDataSetChanged() {
         favoriteHelper = FavoriteHelper.getInstance(mContext);
         favoriteHelper.open();
-        tvShowArrayList.clear();
-        tvShowArrayList.addAll(favoriteHelper.getAllFavorites2());
+        movieArrayList.clear();
+        movieArrayList.addAll(favoriteHelper.getAllFavorites());
         favoriteHelper.close();
     }
 
@@ -47,16 +47,16 @@ public class TVShowStackRemoteViewsFactory implements RemoteViewsService.RemoteV
 
     @Override
     public int getCount() {
-        return tvShowArrayList.size();
+        return movieArrayList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
-        if (tvShowArrayList.size()>0){
+        if (movieArrayList.size() > 0) {
             InputStream inputStream = null;
             try {
-                inputStream = new URL("https://image.tmdb.org/t/p/w500" + tvShowArrayList.get(position).getPhoto1()).openStream();
+                inputStream = new URL("https://image.tmdb.org/t/p/w500" + movieArrayList.get(position).getPhoto1()).openStream();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -65,7 +65,7 @@ public class TVShowStackRemoteViewsFactory implements RemoteViewsService.RemoteV
             rv.setImageViewBitmap(R.id.imageView, BitmapFactory.decodeStream(inputStream));
         }
         Bundle extras = new Bundle();
-        extras.putInt(FavoriteTVShowWidget.EXTRA_ITEM, position);
+        extras.putInt(FavoriteMovieWidget.EXTRA_ITEM, position);
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);

@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Fragment;
+package com.example.android.content.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.API.TVShowAPI;
-import com.example.android.mybotnav.Item.TVShow;
-import com.example.android.mybotnav.R;
-import com.example.android.mybotnav.adapter.ListTVShowAdapter;
+import com.example.android.content.R;
+import com.example.android.content.adapter.ListTVShowAdapter;
+import com.example.android.content.api.Network;
+import com.example.android.content.api.TVShowAPI;
+import com.example.android.content.item.TVShow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,11 +58,12 @@ public class TvShowFragment extends Fragment {
 
         if (query != null) {
             new TVShowTask().execute(TVShowAPI.getSearchURL(query));
-        } else if (savedInstanceState == null) {
+        }
+        if (savedInstanceState == null) {
             new TVShowTask().execute(TVShowAPI.getURL("popular"));
         } else {
             listTVShows = savedInstanceState.getParcelableArrayList(KEY_TV_SHOWS);
-            listTVShowAdapter.refill(listTVShows);
+            listTVShowAdapter.setListFavorite(listTVShows);
         }
     }
 

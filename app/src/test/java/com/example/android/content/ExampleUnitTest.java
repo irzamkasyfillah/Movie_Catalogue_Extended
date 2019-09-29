@@ -1,4 +1,4 @@
-package com.example.android.mybotnav;
+package com.example.android.content;
 
 import org.junit.Test;
 

@@ -1,17 +1,19 @@
-package com.example.android.mybotnav.Loading;
+package com.example.android.content.loading;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.mybotnav.API.MovieAPI;
-import com.example.android.mybotnav.API.Network;
-import com.example.android.mybotnav.Activity.DetailMovieActivity;
-import com.example.android.mybotnav.Item.Movie;
-import com.example.android.mybotnav.Item.MovieDetail;
-import com.example.android.mybotnav.R;
+import com.example.android.content.R;
+import com.example.android.content.activity.DetailMovieActivity;
+import com.example.android.content.api.MovieAPI;
+import com.example.android.content.api.Network;
+import com.example.android.content.item.Movie;
+import com.example.android.content.item.MovieDetail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class LoadingMovieDetail extends AppCompatActivity {
     private String name, description, date, photo2, photo1, year;
     private float rating;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

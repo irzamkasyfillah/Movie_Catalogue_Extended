@@ -1,11 +1,23 @@
-package com.example.android.mybotnav.Item;
+package com.example.android.content.item;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.provider.BaseColumns._ID;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.DATE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.IMAGE2;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.OVERVIEW;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.RATING;
+import static com.example.android.content.db.DatabaseContract.NoteColumns.TITLE;
+import static com.example.android.content.db.DatabaseContract.getColumnFloat;
+import static com.example.android.content.db.DatabaseContract.getColumnInt;
+import static com.example.android.content.db.DatabaseContract.getColumnString;
 
 public class TVShow implements Parcelable {
     public static final Creator<TVShow> CREATOR = new Creator<TVShow>() {
@@ -62,6 +74,26 @@ public class TVShow implements Parcelable {
         this.id = in.readInt();
         this.rating = in.readFloat();
         this.genre = in.readParcelable(JSONArray.class.getClassLoader());
+    }
+
+    public TVShow(int id, String name, String photo1, String photo2, String description, float rating, String date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.photo1 = photo1;
+        this.photo2 = photo2;
+        this.rating = rating;
+    }
+
+    public TVShow(Cursor cursor) {
+        this.id = getColumnInt(cursor, _ID);
+        this.name = getColumnString(cursor, TITLE);
+        this.description = getColumnString(cursor, OVERVIEW);
+        this.date = getColumnString(cursor, DATE);
+        this.photo1 = getColumnString(cursor, IMAGE);
+        this.photo2 = getColumnString(cursor, IMAGE2);
+        this.rating = getColumnFloat(cursor, RATING);
     }
 
     public String getAllgenre() {

@@ -1,4 +1,4 @@
-package com.example.android.mybotnav.Fragment;
+package com.example.android.content.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.mybotnav.R;
-import com.example.android.mybotnav.adapter.FavoriteTabAdapter;
+import com.example.android.content.R;
+import com.example.android.content.adapter.FavoriteTabAdapter;
 
 public class FavoriteFragment extends Fragment {
 

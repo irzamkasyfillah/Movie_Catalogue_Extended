@@ -1,31 +1,26 @@
-package com.example.android.mybotnav.Item;
+package com.example.android.content.item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TVShowDetail {
+public class MovieDetail {
 
     private JSONArray genre, production;
-    private String allGenre, allProduction, status;
+    private String allGenre, tagline, allProduction;
 
-
-    public TVShowDetail(JSONObject jObject) {
+    public MovieDetail(JSONObject jObject) {
         try {
             genre = jObject.getJSONArray("genres");
+            tagline = jObject.getString("tagline");
             production = jObject.getJSONArray("production_companies");
-            status = jObject.getString("status");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public MovieDetail() {
     }
 
     public JSONArray getGenre() {
@@ -42,6 +37,14 @@ public class TVShowDetail {
 
     public void setProduction(JSONArray production) {
         this.production = production;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
     }
 
     public String getAllProduction() {
@@ -89,4 +92,5 @@ public class TVShowDetail {
     public void setAllGenre(String allGenre) {
         this.allGenre = allGenre;
     }
+
 }
